@@ -25,7 +25,7 @@
     <mvc:default-servlet-handler />
     <aop:aspectj-autoproxy proxy-target-class="true" />
     <mvc:annotation-driven>
-      <!--  <mvc:message-converters register-defaults="true">
+      <mvc:message-converters register-defaults="true">
             <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
                 <property name="supportedMediaTypes">
                     <list>
@@ -38,12 +38,12 @@
                         <value>WriteMapNullValue</value>
                         <value>QuoteFieldNames</value>
                         <value>WriteDateUseDateFormat</value>
-                        &lt;!&ndash; 禁用fastjson循环引用检测 &ndash;&gt;
+                       <!--禁用fastjson循环引用检测-->
                         <value>DisableCircularReferenceDetect</value>
                     </list>
                 </property>
             </bean>
-        </mvc:message-converters>-->
+        </mvc:message-converters>
     </mvc:annotation-driven>
 
     <!-- Velocity视图解析器    默认视图  -->
@@ -72,6 +72,7 @@
     <!-- JSP视图解析器  -->
     <bean id="viewResolverJsp" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="suffix" value=".jsp"/>
     </bean>
 

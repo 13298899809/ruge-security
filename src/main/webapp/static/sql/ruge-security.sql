@@ -1,6 +1,7 @@
 create database ruge_security;
 
 -- auto-generated definition
+-- auto-generated definition
 create table sys_user
 (
   user_id        int auto_increment
@@ -20,6 +21,14 @@ create table sys_user
   comment '创建人',
   create_Time    varchar(255) null
   comment '创建时间',
+  user_Birthday  varchar(255) null
+  comment '用户生日',
+  real_Name      varchar(255) null
+  comment '真实姓名',
+  user_Sex       char         null
+  comment '用户性别',
+  user_Motto     varchar(255) null
+  comment '座右铭',
   constraint sys_user_user_id_uindex
   unique (user_id)
 )

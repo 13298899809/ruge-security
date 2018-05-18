@@ -21,6 +21,14 @@ public class SysUser implements Serializable {
     private String passWord;
     private String userMobile;
     private String userEmail;
+    private String userBirthday;
+    private String realName;
+    private String userSex;
+    /**
+     * 座右铭
+     */
+    private String userMotto;
+
     /**
      * 状态  0：禁用   1：正常
      */
@@ -30,4 +38,10 @@ public class SysUser implements Serializable {
 
     private String createUserId;
     private String createTime;
+    /**
+     * 当前页数
+     */
+    /**
+     * 每页显示数量
+     */
 }
