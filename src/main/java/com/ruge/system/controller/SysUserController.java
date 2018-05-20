@@ -78,7 +78,7 @@ public class SysUserController {
     @ResponseBody
     public String insert(@RequestBody SysUser model) {
         System.out.println(model);
-        //sysUserService.insertByModel(model);
+        sysUserService.insertByModel(model);
         return "system/sysUserList";
     }
 

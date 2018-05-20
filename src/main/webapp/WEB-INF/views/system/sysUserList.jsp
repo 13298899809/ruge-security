@@ -1,18 +1,22 @@
 <%--
   Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2018/5/16
-  Time: 8:59
+  User: wujian
+  Date: 2018-05-19
+  Time: 10:27
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
     <title>Title</title>
+    <script src="<%=request.getContextPath()%>/static/lib/jquery/jquery-3.3.1.min.js"></script>
+    <script src="<%=request.getContextPath()%>/static/lib/layui/layui.all.js"></script>
+    <script src="<%=request.getContextPath()%>/static/lib/vue/vue.js-v2.5.16.js"></script>
+    <script src="<%=request.getContextPath()%>/static/lib/vue/axios-v0.18.0.js"></script>
     <link rel="stylesheet" href="<%=request.getContextPath()%>/static/lib/layui/css/layui.css" media="all">
 </head>
 <body>
-
 <div id="app">
     <button class="layui-btn layui-btn-primary" @click="gotoAddForm(-1)">增加按钮</button>
     <button class="layui-btn" @click="delUser">删除按钮</button>
@@ -36,7 +40,7 @@
             <td>{{item.userMobile}}</td>
             <td>{{item.userEmail}}</td>
             <td>
-            <button class="layui-btn layui-btn-normal" @click="gotoUpdateForm(item.userId)">编辑</button>
+                <button class="layui-btn layui-btn-normal" @click="gotoUpdateForm(item.userId)">编辑</button>
                 <button>删除</button>
             </td>
         </tr>
@@ -44,39 +48,39 @@
     </table>
 </div>
 <div id="page"></div>
-<script src="<%=request.getContextPath()%>/static/lib/layui/layui.all.js"></script>
-<script src="<%=request.getContextPath()%>/static/lib/vue/vue.js-v2.5.16.js"></script>
-<script src="<%=request.getContextPath()%>/static/lib/vue/axios-v0.18.0.js"></script>
+
 <script>
+
     var vm = new Vue({
         el: "#app",
         data: {
             userName: "",
-            userId:"",
+            userId: "",
+            total: "",
             dataList: [] /*[{"createTime":"2018年5月16日15:19:42","createUserId":"1","passWord":"845376854","roleIdList":null,"userEmail":"1345528755@qq.com","userId":"1","userMobile":"13298899809","userName":"爱丽丝、如歌","userStatus":1},{"createTime":null,"createUserId":null,"passWord":null,"roleIdList":null,"userEmail":null,"userId":"2","userMobile":null,"userName":"小鸭梨","userStatus":null}]*/
         },
         mounted() {
             this.selUser()
         },
         methods: {
-            gotoAddForm(userId){
+            gotoAddForm(userId) {
                 layer.open({
                     //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
                     type: 2,
                     title: "添加员工",
                     skin: "myclass",
-                    area: [800,600],
-                    content: 'form.do?userId='+userId
+                    area: [800, 600],
+                    content: 'form.do?userId=' + userId
                 });
             },
-            gotoUpdateForm(userId){
+            gotoUpdateForm(userId) {
                 layer.open({
                     //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
                     type: 2,
                     title: "修改员工",
                     skin: "myclass",
-                    area: [800,600],
-                    content: 'form.do?userId='+userId
+                    area: [800, 600],
+                    content: 'form.do?userId=' + userId
                 });
             },
             delUser() {
@@ -87,28 +91,50 @@
             },
             selUser() {
                 var that = this;
+                var total = '';
                 layui.use('laypage', function () {
                     var laypage = layui.laypage;
+                    var total = "";
+                    console.log("---"+total);
                     //完整功能
                     laypage.render({
                         elem: 'page'
                         , count: 100
                         , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
                         , jump: function (e) {
-                            axios.get('/sysUser/list.do', {
+                            $.ajax({
+                                url: "/sysUser/list.do",
                                 headers: {'Content-Type': 'text/x-www-form-urlencoded'},
-                                params: {
+                                async: false,
+                                data: {
                                     curr: e.curr,
                                     limit: e.limit
+                                },
+                                success: function (response) {
+                                    that.dataList = JSON.parse(response).dataList;
+                                    total = JSON.parse(response).total;
+                                    console.log(total);
                                 }
-                            }).then(function (response) {
-                                that.dataList = response.data.dataList;
-                                console.log(that.dataList);
-                            }).catch(function (response) {
-                                console.log(response);//发生错误时执行的代码
                             });
+                            /* axios.get('/sysUser/list.do', {
+                                  headers: {'Content-Type': 'text/x-www-form-urlencoded'},
+                                  params: {
+                                      curr: e.curr,
+                                      limit: e.limit
+                                  }
+                              }).then(function (response) {
+                                  console.log(response);
+                                  that.dataList = response.data.dataList;
+                                  that.total = response.data.total;
+                                  console.log(that.total);
+                                  total = that.total;
+                                  console.log(total);
+                              }).catch(function (response) {
+                                  console.log(response);//发生错误时执行的代码
+                              });*/
                         }
                     });
+                    console.log("===" + total);
                 });
             }
         }

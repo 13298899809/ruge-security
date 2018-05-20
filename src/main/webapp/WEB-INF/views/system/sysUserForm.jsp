@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Administrator
+  Date: 2018/5/16
+  Time: 8:59
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -21,7 +28,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">手机<span style="color:red"> *</span></label>
             <div class="layui-input-inline">
-                <input type="tel" name="phone"  autocomplete="off" class="layui-input">
+                <input type="tel" name="phone" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -36,7 +43,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">邮箱<span style="color:red"> *</span></label>
             <div class="layui-input-inline">
-                <input type="text" name="userEmail"  autocomplete="off" class="layui-input">
+                <input type="text" name="userEmail" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -81,17 +88,29 @@
             axios({
                 method: 'post',
                 url: 'insert.do',
-                dataType:'json',
+                dataType: 'json',
                 headers: {'Content-type': 'application/json;charset=UTF-8'},
-                contentType:"application/json",
+                contentType: "application/json",
                 data: JSON.stringify(data.field)
-            }).then(function(response) {
-              /*  alert(response.data);*/
-            }).catch(function(error) {
-               /* alert(error);*/
+            }).then(function (response) {
+                /*  alert(response.data);*/
+            }).catch(function (error) {
+                /* alert(error);*/
             });
-            return false;
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+            window.parent.location.reload();
         });
+        //表单初始赋值
+        form.val('example', {
+            "userName": "贤心" // "name": "value"
+            , "password": "123456"
+            , "interest": 1
+            , "like[write]": true //复选框选中状态
+            , "close": true //开关状态
+            , "sex": "女"
+            , "desc": "我爱 layui"
+        })
     });
 </script>
 </body>
