@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Title</title>
@@ -17,127 +17,56 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/static/lib/layui/css/layui.css" media="all">
 </head>
 <body>
-<div id="app">
-    <button class="layui-btn layui-btn-primary" @click="gotoAddForm(-1)">增加按钮</button>
-    <button class="layui-btn" @click="delUser">删除按钮</button>
-    <button class="layui-btn layui-btn-warm" @click="selUser">查询按钮</button>
-    <table class="layui-table" lay-skin="line">
-        <thead>
-        <tr>
-            <th>序号</th>
-            <th hidden>id</th>
-            <th>昵称</th>
-            <th>加入时间</th>
-            <th>签名</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(item, index) in dataList">
-            <td>{{index+1}}</td>
-            <td hidden>{{item.userId}}</td>
-            <td>{{item.userName}}</td>
-            <td>{{item.userMobile}}</td>
-            <td>{{item.userEmail}}</td>
-            <td>
-                <button class="layui-btn layui-btn-normal" @click="gotoUpdateForm(item.userId)">编辑</button>
-                <button>删除</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<div id="app" lay-filter="demo">
 </div>
-<div id="page"></div>
-
+<script type="text/html" id="userBar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
 <script>
-
-    var vm = new Vue({
-        el: "#app",
-        data: {
-            userName: "",
-            userId: "",
-            total: "",
-            dataList: [] /*[{"createTime":"2018年5月16日15:19:42","createUserId":"1","passWord":"845376854","roleIdList":null,"userEmail":"1345528755@qq.com","userId":"1","userMobile":"13298899809","userName":"爱丽丝、如歌","userStatus":1},{"createTime":null,"createUserId":null,"passWord":null,"roleIdList":null,"userEmail":null,"userId":"2","userMobile":null,"userName":"小鸭梨","userStatus":null}]*/
-        },
-        mounted() {
-            this.selUser()
-        },
-        methods: {
-            gotoAddForm(userId) {
+    let userContext = "";
+    layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element'], function () {
+        var laydate = layui.laydate //日期
+            , laypage = layui.laypage //分页
+        layer = layui.layer //弹层
+            , table = layui.table //表格
+            , carousel = layui.carousel //轮播
+            , upload = layui.upload //上传
+            , element = layui.element; //元素操作
+        table.on('tool(demo)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'detail') {
+                layer.msg('ID：' + data.id + ' 的查看操作');
+            } else if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    obj.del();
+                    layer.close(index);
+                });
+            } else if (obj.event === 'edit') {
                 layer.open({
                     //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
                     type: 2,
-                    title: "添加员工",
+                    title: "修改信息",
                     skin: "myclass",
                     area: [800, 600],
-                    content: 'form.do?userId=' + userId
-                });
-            },
-            gotoUpdateForm(userId) {
-                layer.open({
-                    //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
-                    type: 2,
-                    title: "修改员工",
-                    skin: "myclass",
-                    area: [800, 600],
-                    content: 'form.do?userId=' + userId
-                });
-            },
-            delUser() {
-                alert(2)
-            },
-            updUser() {
-                alert(3)
-            },
-            selUser() {
-                var that = this;
-                var total = '';
-                layui.use('laypage', function () {
-                    var laypage = layui.laypage;
-                    var total = "";
-                    console.log("---"+total);
-                    //完整功能
-                    laypage.render({
-                        elem: 'page'
-                        , count: 100
-                        , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-                        , jump: function (e) {
-                            $.ajax({
-                                url: "/sysUser/list.do",
-                                headers: {'Content-Type': 'text/x-www-form-urlencoded'},
-                                async: false,
-                                data: {
-                                    curr: e.curr,
-                                    limit: e.limit
-                                },
-                                success: function (response) {
-                                    that.dataList = JSON.parse(response).dataList;
-                                    total = JSON.parse(response).total;
-                                    console.log(total);
-                                }
-                            });
-                            /* axios.get('/sysUser/list.do', {
-                                  headers: {'Content-Type': 'text/x-www-form-urlencoded'},
-                                  params: {
-                                      curr: e.curr,
-                                      limit: e.limit
-                                  }
-                              }).then(function (response) {
-                                  console.log(response);
-                                  that.dataList = response.data.dataList;
-                                  that.total = response.data.total;
-                                  console.log(that.total);
-                                  total = that.total;
-                                  console.log(total);
-                              }).catch(function (response) {
-                                  console.log(response);//发生错误时执行的代码
-                              });*/
-                        }
-                    });
-                    console.log("===" + total);
+                    content: 'form.do?userId=' + data.userId
                 });
             }
-        }
+        });
+        //执行一个 table 实例
+        table.render({
+            elem: '#app'
+            , height: 332
+            , url: '/sysUser/list.do' //数据接口
+            , page: true //开启分页
+            , cols: [[ //表头
+                {field: 'userId', title: 'ID', sort: true, fixed: 'left'},
+                {field: 'userName', title: '用户名'},
+                {field: 'userSex', title: '性别', sort: true},
+                {fixed: 'right', align: 'center', toolbar: '#userBar'}
+            ]]
+        });
     });
 </script>
 </body>
