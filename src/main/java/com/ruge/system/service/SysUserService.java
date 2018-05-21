@@ -14,7 +14,7 @@ public interface SysUserService {
 
     public int insertByModel(SysUser model);
 
-    public int updateByModel(SysUser model,Example example);
+    public int updateByModel(SysUser model);
 
     public int deleteByModel(Example example);
 }

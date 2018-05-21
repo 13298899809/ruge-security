@@ -17,19 +17,20 @@
 
 </head>
 <body>
-<form class="layui-form" action="" lay-filter="example">
+<form class="layui-form"  lay-filter="example">
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">昵称</label>
             <div class="layui-input-inline">
-                <input type="tel" name="userName" lay-verify="required|userName" autocomplete="off" class="layui-input"
+                <input type="text" name="userName" lay-verify="required|userName" autocomplete="off" class="layui-input"
                        value="${user.userName}">
             </div>
         </div>
         <div class="layui-inline">
+            <input type="text" name="userId" value="${user.userId}">
             <label class="layui-form-label">手机号码</label>
             <div class="layui-input-inline">
-                <input type="text" name="userMobile" lay-verify="phone" autocomplete="off" class="layui-input"
+                <input type="text" name="userMobile"  autocomplete="off" class="layui-input"
                        value="${user.userMobile}">
             </div>
         </div>
@@ -45,7 +46,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">邮箱</label>
             <div class="layui-input-inline">
-                <input type="text" name="userMobile" lay-verify="email" autocomplete="off" class="layui-input"
+                <input type="text" name="userMobile"  autocomplete="off" class="layui-input"
                        value="${user.userEmail}">
             </div>
         </div>
@@ -72,8 +73,8 @@
         </div>
     </div>
 </form>
-<script src="<%=request.getContextPath()%>/static/lib/layui/layui.all.js"></script>
 <script src="<%=request.getContextPath()%>/static/lib/jquery/jquery-3.3.1.min.js"></script>
+<script src="<%=request.getContextPath()%>/static/lib/layui/layui.all.js"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
     layui.use(['form', 'layedit', 'laydate'], function () {
@@ -86,30 +87,35 @@
         laydate.render({
             elem: '#date'
         });
-
         //创建一个编辑器
         var editIndex = layedit.build('LAY_demo_editor');
-
-        //自定义验证规则
-        form.verify({
-            title: function (value) {
-                if (value.length < 5) {
-                    return '标题至少得5个字符啊';
-                }
-            }
-            , pass: [/(.+){6,12}$/, '密码必须6到12位']
-            , content: function (value) {
-                layedit.sync(editIndex);
-            }
-        });
         //监听提交
         form.on('submit(submit)', function (data) {
-            layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            })
-            return false;
+            $.ajax({
+               type:"POST",
+                url:"update.do",
+                headers: {'Content-type': 'application/json;charset=UTF-8'},
+                contentType:"application/json",
+                async: false,   //问题的关键，明确是异步提交数据
+                dataType: 'json',  //请求数据类型
+                data: JSON.stringify(data.field),
+                success(data){
+                layer.alert(data);
+                },
+                error(data){
+                layer.alert(data);
+                }
+            });
+            closeCurrForm();
         });
     });
+    //关闭当前窗口
+    function closeCurrForm(){
+        //获取窗口索引
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+
+    }
 </script>
 </body>
 </html>

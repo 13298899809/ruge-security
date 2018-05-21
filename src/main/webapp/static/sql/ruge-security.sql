@@ -1,7 +1,5 @@
 create database ruge_security;
 
--- auto-generated definition
--- auto-generated definition
 create table sys_user
 (
   user_id        int auto_increment
@@ -33,4 +31,17 @@ create table sys_user
   unique (user_id)
 )
   comment '系统用户表';
+
+  CREATE TABLE ruge_dictionary
+(
+    id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    dic_code varchar(255) COMMENT '字典码',
+    dic_value varchar(255) COMMENT '字典值',
+    dic_type varchar(255) COMMENT '字典类别',
+    dic_sort int COMMENT '字典排序',
+    dic_pid int COMMENT '字典的父id',
+    dic_des varchar(255) COMMENT '字典描述'
+);
+CREATE UNIQUE INDEX ruge_dictionary_id_uindex ON ruge_dictionary (id);
+ALTER TABLE ruge_dictionary COMMENT = '字典表';
 

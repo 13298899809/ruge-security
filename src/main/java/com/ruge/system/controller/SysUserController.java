@@ -103,16 +103,16 @@ public class SysUserController {
     @RequestMapping(value = "insert.do", method = RequestMethod.POST)
     @ResponseBody
     public String insert(@RequestBody SysUser model) {
-        System.out.println(model);
         sysUserService.insertByModel(model);
         return "system/sysUserList";
     }
 
     @RequestMapping(value = "update.do", method = RequestMethod.POST)
-    public String update(SysUser model, Example example) {
-        sysUserService.updateByModel(model, example);
-        return "";
-    }
+    @ResponseBody
+    public String update(@RequestBody SysUser model) {
+        int i = sysUserService.updateByModel(model);
+        return "system/sysUserList";
+}
 
     @RequestMapping(value = "delete.do", method = RequestMethod.POST)
     public String delete(Example example) {

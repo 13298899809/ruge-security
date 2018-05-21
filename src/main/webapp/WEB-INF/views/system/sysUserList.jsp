@@ -25,15 +25,11 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script>
-    let userContext = "";
     layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element'], function () {
         var laydate = layui.laydate //日期
             , laypage = layui.laypage //分页
         layer = layui.layer //弹层
             , table = layui.table //表格
-            , carousel = layui.carousel //轮播
-            , upload = layui.upload //上传
-            , element = layui.element; //元素操作
         table.on('tool(demo)', function (obj) {
             var data = obj.data;
             if (obj.event === 'detail') {
@@ -50,7 +46,10 @@
                     title: "修改信息",
                     skin: "myclass",
                     area: [800, 600],
-                    content: 'form.do?userId=' + data.userId
+                    content: 'form.do?userId=' + data.userId,
+                    end: function () {
+                        location.reload();
+                    }
                 });
             }
         });

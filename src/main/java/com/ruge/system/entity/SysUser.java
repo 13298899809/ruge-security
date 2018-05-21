@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class SysUser implements Serializable {
     private static final long serialVersionUID = 1L;
+    @Id
     private String userId;
     private String userName;
     private String passWord;

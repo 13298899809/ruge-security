@@ -28,8 +28,8 @@ public class SysUserServiceImpl implements SysUserService {
         return sysUserDao.insertSelective(model);
     }
     @Override
-    public int updateByModel(SysUser model,Example example){
-        return sysUserDao.updateByExampleSelective(model, example);
+    public int updateByModel(SysUser model){
+        return sysUserDao.updateByPrimaryKeySelective(model);
     }
     @Override
     public int deleteByModel(Example example){
