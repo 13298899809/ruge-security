@@ -12,6 +12,8 @@ import java.util.List;
 public interface SysUserService {
     public List<SysUser> selectByExample(Example example);
 
+    public SysUser selectOne(SysUser model);
+
     public int insertByModel(SysUser model);
 
     public int updateByModel(SysUser model);

@@ -24,6 +24,11 @@ public class SysUserServiceImpl implements SysUserService {
         return sysUserDao.selectByExample(example);
     }
     @Override
+    public SysUser selectOne(SysUser sysUser) {
+        return sysUserDao.selectOne(sysUser);
+    }
+
+    @Override
     public int insertByModel(SysUser model){
         return sysUserDao.insertSelective(model);
     }
