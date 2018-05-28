@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Id;
+
 /**
  * 爱丽丝、如歌 创建于 2018/5/16 13:47
  * 说明: 字典表
@@ -11,7 +13,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SysCode {
+public class SysDict {
+    @Id
     private Long id;
     /**
      * 编码值

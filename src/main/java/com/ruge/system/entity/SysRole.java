@@ -5,9 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 爱丽丝、如歌 创建于 2018/5/16 13:47
@@ -18,11 +21,27 @@ import java.util.List;
 @AllArgsConstructor
 public class SysRole implements Serializable {
     private static final long serialVersionUID = 1L;
-    private String orgId;
+    /**
+     * 角色id
+     */
     private Long roleId;
+    /**
+     * 角色名称
+     */
     private String roleName;
+    /**
+     * 备注
+     */
     private String remark;
-    private List<Long> menuIdList;
+    /**
+     * 用户列表
+     */
+    private Set<SysUser> userIdList = new HashSet<>();
+    /**
+     * 菜单列表
+     */
+    private Set<SysMenu> menuIdList = new HashSet<>();
+
 
     private Long createUserId;
     private Date createTime;

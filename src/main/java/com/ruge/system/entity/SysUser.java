@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 爱丽丝、如歌 创建于 2018年5月16日14:16:02
@@ -17,14 +19,34 @@ import java.util.List;
 @AllArgsConstructor
 public class SysUser implements Serializable {
     private static final long serialVersionUID = 1L;
+    /**
+     * uuid
+     */
     @Id
     private String userId;
+    /**
+     * 用户昵称
+     */
     private String userName;
+    /**
+     * 密码
+     */
     private String passWord;
+    /**
+     * 用户手机号
+     */
     private String userMobile;
+    /**
+     * 用户邮箱
+     */
     private String userEmail;
+    /**
+     * 用户生日
+     */
     private String userBirthday;
-    private String realName;
+    /**
+     * 用户性别
+     */
     private String userSex;
     /**
      * 座右铭
@@ -35,15 +57,11 @@ public class SysUser implements Serializable {
      * 状态  0：禁用   1：正常
      */
     private Integer userStatus;
-
-    private List<Long> roleIdList;
+    /**
+     * 角色列表
+     */
+    private Set<SysRole> roleIdList = new HashSet<>();
 
     private String createUserId;
     private String createTime;
-    /**
-     * 当前页数
-     */
-    /**
-     * 每页显示数量
-     */
 }

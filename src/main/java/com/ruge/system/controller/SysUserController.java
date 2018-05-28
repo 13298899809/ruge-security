@@ -116,7 +116,6 @@ public class SysUserController {
 
     @RequestMapping(value = "delete.do", method = RequestMethod.POST)
     public String delete(Example example) {
-        sysUserService.deleteByModel(example);
         return "";
     }
 }

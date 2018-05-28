@@ -1,9 +1,13 @@
 package com.ruge.system.controller;
 
 import com.ruge.system.entity.SysUser;
+import com.ruge.system.service.SysUserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +26,8 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "system")
 public class LoginController {
+    @Autowired
+    private SysUserService sysUserService;
 
     /**
      * 登录页面
@@ -34,29 +40,34 @@ public class LoginController {
     /**
      * 登录成功页面跳转
      */
-    @RequestMapping(value = "main",method = RequestMethod.GET)
-    public String main(){
+    @RequestMapping(value = "main", method = RequestMethod.GET)
+    @RequiresRoles("admin")
+    public String main() {
         return "system/sysMain";
     }
+
     /**
      * 登录验证
      */
     @RequestMapping(value = "checkLogin.do", method = RequestMethod.POST)
     @ResponseBody
-    public Map checkLogin(SysUser user) {
+    public Map checkLogin(SysUser user,HttpSession session) {
         String msg = "登录成功";
         boolean result = true;
         Map map = new HashMap();
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUserMobile(), user.getPassWord());
+        SysUser sysUser = null;
         try {
             subject.login(token);
         } catch (Exception e) {
             msg = "登录失败";
+            sysUserService.selectOne(user);
             result = false;
-        }finally {
-            map.put("msg",msg);
-            map.put("result",result);
+        } finally {
+            map.put("msg", msg);
+            map.put("result", result);
+            session.setAttribute("user",sysUser);
         }
         return map;
     }

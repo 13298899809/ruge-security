@@ -3,11 +3,10 @@ package com.ruge.system.service.impl;
 import com.ruge.system.dao.SysUserDao;
 import com.ruge.system.entity.SysUser;
 import com.ruge.system.service.SysUserService;
-import org.apache.ibatis.session.RowBounds;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -16,16 +15,24 @@ import java.util.List;
  */
 @Service
 public class SysUserServiceImpl implements SysUserService {
-    @Autowired
+    @Resource
     private SysUserDao sysUserDao;
 
+    /**
+     * 查询用户列表
+     */
     @Override
     public List<SysUser> selectByExample(Example example) {
         return sysUserDao.selectByExample(example);
     }
+    /**
+     * 通过用户名查询用户信息 登录使用
+     * @param model 用户名
+     * @return 用户对象
+     */
     @Override
-    public SysUser selectOne(SysUser sysUser) {
-        return sysUserDao.selectOne(sysUser);
+    public SysUser selectOne(SysUser model) {
+        return sysUserDao.selectOne(model);
     }
 
     @Override
@@ -37,7 +44,7 @@ public class SysUserServiceImpl implements SysUserService {
         return sysUserDao.updateByPrimaryKeySelective(model);
     }
     @Override
-    public int deleteByModel(Example example){
-        return sysUserDao.deleteByExample(example);
+    public int deleteByModel(SysUser model){
+        return sysUserDao.deleteByPrimaryKey(model);
     }
 }

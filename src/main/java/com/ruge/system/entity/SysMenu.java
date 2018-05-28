@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.List;
 
@@ -20,7 +21,16 @@ public class SysMenu implements Serializable {
     /**
      * 菜单ID
      */
+    @Id
     private Long menuId;
+    /**
+     * 菜单名称
+     */
+    private String menuName;
+    /**
+     * 菜单URL
+     */
+    private String menuUrl;
 
     /**
      * 父菜单ID，一级菜单为0
@@ -31,31 +41,20 @@ public class SysMenu implements Serializable {
      * 父菜单名称
      */
     private String parentName;
-
-    /**
-     * 菜单名称
-     */
-    private String name;
-
-    /**
-     * 菜单URL
-     */
-    private String url;
-
     /**
      * 授权(多个用逗号分隔，如：user:list,user:create)
      */
-    private String perms;
+    private String menuPerms;
 
     /**
      * 类型     0：目录   1：菜单   2：按钮
      */
-    private Integer type;
+    private Integer menuType;
 
     /**
      * 菜单图标
      */
-    private String icon;
+    private String menuIcon;
 
     /**
      * 排序
